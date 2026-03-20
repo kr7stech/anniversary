@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💜 Our First Anniversary 💜</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&display=swap');
+
+        :root {
+            --purple-dark: #4A148C;
+            --purple-main: #6A1B9A;
+            --purple-light: #BA68C8;
+            --pink-accent: #D81B60;
+            --gold: #FBC02D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+            color: white;
+            background: linear-gradient(135deg, #4A148C, #7B1FA2);
+            height: 100vh;
+        }
+
+        /* BALLOONS */
+        .balloons {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -60px;
+            font-size: 55px;
+            animation: floatUp linear infinite;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(-8deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(12deg); opacity: 0; }
+        }
+
+        /* PAGES */
+        .page {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease;
+            z-index: 10;
+        }
+
+        #landing-page { background: linear-gradient(135deg, #4A148C, #7B1FA2); }
+
+        #content-page {
+            display: none;
+            background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 100%);
+            flex-direction: column;
+            padding: 30px;
+        }
+
+        /* ENVELOPE (same as before) */
+        .envelope-container {
+            position: relative;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 0.4s ease;
+        }
+        .envelope-container:hover { transform: scale(1.05); }
+
+        .envelope {
+            width: 380px; height: 260px;
+            background: #fff9f0;
+            border: 12px solid var(--purple-main);
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 30px rgba(186,104,200,0.3);
+            position: relative;
+            perspective: 1200px;
+            overflow: hidden;
+        }
+
+        .envelope::before {
+            content: "TO MY ETERNAL LOVE";
+            position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+            font-family: 'malibu', cursive; font-size: 22px;
+            color: var(--purple-dark); letter-spacing: 3px; text-align: center; z-index: 5;
+        }
+
+        .envelope::after {
+            content: "from Kris 💜";
+            position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
+            font-family: 'malibu', cursive; font-size: 20px;
+            color: var(--purple-dark); z-index: 5;
+        }
+
+        .flap {
+            position: absolute; top: 0; left: 0; width: 100%; height: 55%;
+            background: linear-gradient(#9C27B0, #6A1B9A);
+            clip-path: polygon(0 0, 50% 65%, 100% 0);
+            transition: transform 0.9s cubic-bezier(0.6,0,0.2,1);
+            transform-origin: top center; z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .envelope.open .flap { transform: rotateX(-175deg); }
+
+        .seal {
+            position: absolute; top: 42%; left: 50%; transform: translate(-50%,-50%);
+            width: 68px; height: 68px; background: var(--pink-accent); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 42px;
+            box-shadow: 0 0 15px rgba(216,27,96,0.6); z-index: 15;
+            transition: all 0.6s ease;
+        }
+
+        .envelope.open .seal { transform: translate(-50%,-180%) scale(0.6); opacity: 0; }
+
+        .click-text {
+            position: absolute; bottom: -70px; left: 50%; transform: translateX(-50%);
+            font-family: 'Dancing Script', cursive; font-size: 26px; color: #fff;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.5); white-space: nowrap;
+            animation: pulse 2s infinite; z-index: 30;
+        }
+
+        @keyframes pulse { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+        /* MAIN LAYOUT */
+        .main-wrapper {
+            position: relative; z-index: 20;
+            width: 100%; max-width: 1400px; margin: 0 auto;
+            display: flex; gap: 30px; height: 100%;
+        }
+
+        /* LEFT PHOTOS - scrollable if too many, but usually fits */
+        .photos-left {
+            flex: 1.2;
+            display: flex; flex-direction: column; gap: 50px;
+            padding-top: 30px; overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .photos-left::-webkit-scrollbar { width: 6px; }
+        .photos-left::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+        .photos-left::-webkit-scrollbar-thumb { background: var(--purple-light); border-radius: 10px; }
+
+        .photo-hang {
+            position: relative; width: 210px; align-self: center;
+        }
+
+        .string {
+            width: 4px; height: 130px;
+            background: linear-gradient(transparent, #5D4037, transparent);
+            margin: 0 auto; display: block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .polaroid {
+            width: 210px; background: #fff; padding: 14px 14px 28px;
+            box-shadow: 6px 10px 20px rgba(0,0,0,0.35);
+            text-align: center; border: 7px solid #fff;
+            transition: transform 0.4s ease;
+        }
+
+        .polaroid:hover { transform: scale(1.08) rotate(2deg); }
+
+        .polaroid img {
+            width: 100%; height: 250px; object-fit: cover;
+            border: 3px solid #eee;
+        }
+
+        .polaroid p {
+            margin-top: 8px; font-family: 'Dancing Script', cursive;
+            font-size: 17px; color: var(--purple-dark); font-weight: 700;
+        }
+
+        /* CENTER LETTER - ONLY THIS PART SCROLLS */
+        .letter-center {
+            flex: 2;
+            background: #fff9f0; border: 14px solid var(--purple-main);
+            border-radius: 12px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            position: relative; 
+            color: #333; 
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;           /* ← key: limit height */
+            overflow-y: auto;           /* ← enables scroll only here */
+            scrollbar-width: thin;
+        }
+
+        .letter-center::-webkit-scrollbar { width: 8px; }
+        .letter-center::-webkit-scrollbar-track { background: rgba(186,104,200,0.15); }
+        .letter-center::-webkit-scrollbar-thumb { background: var(--purple-main); border-radius: 10px; }
+
+        .letter-inner {
+            padding: 55px 50px;
+            flex: 1;
+        }
+
+        .letter-center::before {
+            content: "💜"; position: absolute; top: -25px; left: 50%;
+            transform: translateX(-50%); font-size: 70px; opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .letter-center h1 {
+            font-family: 'Dancing Script', cursive; font-size: 62px;
+            text-align: center; color: var(--purple-main); margin-bottom: 25px;
+            text-shadow: 2px 2px 8px rgba(154,27,154,0.3);
+        }
+
+        .letter-center .date {
+            text-align: center; font-size: 18px; color: #6A1B9A;
+            margin-bottom: 40px; letter-spacing: 3px;
+        }
+
+        .letter-center .message {
+            font-size: 22px; line-height: 1.75;
+            font-family: Georgia, serif; text-align: justify; color: #333;
+        }
+
+        .letter-center .message p { margin-bottom: 22px; }
+
+        .signature {
+            margin-top: 50px; text-align: right;
+            font-family: 'Dancing Script', cursive; font-size: 38px;
+            color: var(--purple-main);
+        }
+
+        /* RIGHT VIDEO - bigger */
+        .right-sidebar {
+            flex: 1.3;
+            display: flex; flex-direction: column; gap: 40px;
+            padding-top: 30px; align-items: center;
+        }
+
+        .video-box {
+            width: 320px; background: #fff; padding: 20px;
+            border: 10px solid var(--purple-light); border-radius: 10px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .video-box h3 {
+            font-family: 'Dancing Script', cursive; color: var(--purple-main);
+            margin-bottom: 15px; font-size: 28px;
+        }
+
+        .video-container {
+            position: relative; width: 100%; padding-top: 177.78%;
+            background: #000; border-radius: 8px; overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+        }
+
+        .video-placeholder {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 20px; text-align: center; pointer-events: none;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .decor-right { font-size: 110px; opacity: 0.18; pointer-events: none; }
+
+        /* FOOTER */
+        .footer {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            font-size: 16px; opacity: 0.7; z-index: 30; pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LANDING -->
+    <div id="landing-page" class="page">
+        <div class="balloons" id="balloons-landing"></div>
+        <div class="envelope-container" id="envelope-container">
+            <div class="envelope" id="envelope">
+                <div class="flap"></div>
+                <div class="seal">💜</div>
+            </div>
+            <div class="click-text">CLICK TO OPEN OUR LETTER 💜</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="content-page" class="page">
+        <div class="balloons" id="balloons-content"></div>
+        
+        <div class="main-wrapper">
+
+            <!-- LEFT: 15 photos -->
+            <div class="photos-left">
+                <!-- You can replace src with your real photos -->
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-4deg);"><img src="photo1.jpg" alt=""><p>Our beginning</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:160px;"></div>
+                    <div class="polaroid" style="transform:rotate(5deg);"><img src="photo2.jpg" alt=""><p>Love Birds</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-3deg);"><img src="photo3.jpg" alt=""><p>Chaotic Couple</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:140px;"></div>
+                    <div class="polaroid" style="transform:rotate(6deg);"><img src="photo4.jpg" alt=""><p>Eyes of love</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-5deg);"><img src="photo5.jpg" alt=""><p>Social Night</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:150px;"></div>
+                    <div class="polaroid" style="transform:rotate(4deg);"><img src="photo6.jpg" alt=""><p>Mirror Selfie</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-2deg);"><img src="photo7.jpg" alt=""><p>Love at the Library</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:170px;"></div>
+                    <div class="polaroid" style="transform:rotate(3deg);"><img src="photo8.jpg" alt=""><p>Karoake</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-6deg);"><img src="photo9.jpg" alt=""><p>The Perfect Grip</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:130px;"></div>
+                    <div class="polaroid" style="transform:rotate(2deg);"><img src="photo10.jpg" alt=""><p>Spending a whole day</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-1deg);"><img src="photo11.jpg" alt=""><p>Lunch date (kinda)</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:160px;"></div>
+                    <div class="polaroid" style="transform:rotate(5deg);"><img src="photo12.jpg" alt=""><p>Perfect Match</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-4deg);"><img src="photo13.jpg" alt=""><p>Crazy Moments</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:140px;"></div>
+                    <div class="polaroid" style="transform:rotate(7deg);"><img src="photo14.jpg" alt=""><p>First Time at my Crib</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-3deg);"><img src="photo15.jpg" alt=""><p>First Date</p></div>
+                </div>
+				<div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-6deg);"><img src="photo16.jpg" alt=""><p>Sunset Vibes</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:130px;"></div>
+                    <div class="polaroid" style="transform:rotate(2deg);"><img src="photo17.jpg" alt=""><p>Selfie Queen</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-1deg);"><img src="photo18.jpg" alt=""><p>Naughty Moments</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:160px;"></div>
+                    <div class="polaroid" style="transform:rotate(5deg);"><img src="photo19.jpg" alt=""><p>Before Shower</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-4deg);"><img src="photo20.jpg" alt=""><p>Photoshoot</p></div>
+                </div>
+                <div class="photo-hang"><div class="string" style="height:140px;"></div>
+                    <div class="polaroid" style="transform:rotate(7deg);"><img src="photo21.jpg" alt=""><p>Video Calls</p></div>
+                </div>
+                <div class="photo-hang"><div class="string"></div>
+                    <div class="polaroid" style="transform:rotate(-3deg);"><img src="photo22.jpg" alt=""><p>FAVORITE</p></div>
+                </div>
+			</div>
+
+            <!-- CENTER: scrollable letter only -->
+            <div class="letter-center">
+                <div class="letter-inner">
+                    <h1>Happy 1st Anniversary</h1>
+                    <div class="date">21st March ♾️</div>
+                    
+                    <div class="message">
+                        <p>Mi señora,</p>
+                        <p>A year ago, I didn’t know that one moment would change everything. I still see it so clearly… you standing there during Holi, red colour on your cheeks, wearing that maroon dress with your little black jacket, black Converse, and even in it those socks with a few holes. It wasn’t just how beautiful you looked… it was something about you that pulled me in without me even understanding why.</p>
+						<p>I tried to ignore it. I held back, stayed quiet, acted like it didn’t matter. But deep down, something in me already knew… you weren’t just going to be a passing moment in my life. And somehow, life brought us back to each other.</p>
+						<p>Since then, it’s been more than just love. It’s been real.</p>
+						<pThe laughs, the late-night calls, the constant messages, the distance, the chaos… even the arguments. And through all of it, we still choose each other. We still stay. That’s what makes us different.></p>
+						<pBecause no matter how hard things get, we don’t walk away. We fight, we feel, we grow… but we do it together.></p>
+						<p>You’ve been by my side through everything, and somewhere along the way, you became my home. My peace, even in the middle of all the madness.</p>
+						<p>When I think about the future, I don’t see anything without you in it.</p>
+						<p>I see us building a life together, chasing our dreams, growing side by side… and one day, I see you as my wife. I see our family, our kids, our forever. I can’t wait for that life with you.</p>
+						<p>This past year wasn’t perfect, but it was real, and it was ours. And I wouldn’t trade it for anything.</p>
+						<p>Thank you for loving me, for staying, for choosing me even on the hard days.</p>
+						<p>This is just the beginning of us</p>
+						<p>I LOVE YOU MORE THAN WORDS CAN EVER DESCRIBE MY LOVE</p>
+						<p>Cheers to a new milestone ml🥂</p>
+					</div>
+                    
+                    <div class="signature">Forever yours,<br>Kartik 💜</div>
+                </div>
+            </div>
+
+            <!-- RIGHT: video box -->
+            <div class="right-sidebar">
+                <div class="video-box">
+                    <h3>Our Favorite Memory</h3>
+                    <div class="video-container">
+                        <!-- ← Replace with your real video embed -->
+                        <iframe src="" 
+                                title="Our Video" frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen></iframe>
+                    <p style="font-size:15px; color:#555;">Our special moment captured</p>
+                </div>
+
+                <div class="decor-right">🎈🎈🎈</div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Made with endless love • 1st Anniversary 💜
+        </div>
+    </div>
+
+    <script>
+        function createBalloons(id, count=28) {
+            const cont = document.getElementById(id);
+            const colors = ['#9C27B0','#D81B60','#6A1B9A','#BA68C8','#E91E63','#AB47BC','#F06292'];
+            for(let i=0; i<count; i++){
+                let b = document.createElement('div');
+                b.className = 'balloon'; b.textContent = '🎈';
+                b.style.left = Math.random()*100 + 'vw';
+                let dur = Math.random()*18 + 16; b.style.animationDuration = dur+'s';
+                b.style.animationDelay = (Math.random()*-25)+'s';
+                b.style.fontSize = (Math.random()*32 + 48)+'px';
+                b.style.color = colors[Math.floor(Math.random()*colors.length)];
+                cont.appendChild(b);
+                setTimeout(()=>b.remove(), (dur + 25)*1000);
+            }
+        }
+
+        const env = document.getElementById('envelope');
+        const envCont = document.getElementById('envelope-container');
+        const land = document.getElementById('landing-page');
+        const contPage = document.getElementById('content-page');
+
+        envCont.onclick = ()=>{
+            env.classList.add('open');
+            setTimeout(()=>{
+                land.style.opacity='0';
+                setTimeout(()=>{
+                    land.style.display='none';
+                    contPage.style.display='flex';
+                    contPage.style.opacity='1';
+                    createBalloons('balloons-content',26);
+                },800);
+            },950);
+        };
+
+        window.onload = ()=>{
+            createBalloons('balloons-landing',30);
+            envCont.style.animation = 'floatEnvelope 3s ease-in-out infinite';
+        };
+
+        document.head.insertAdjacentHTML('beforeend',`<style>
+            @keyframes floatEnvelope {0%,100%{transform:translateY(0);}50%{transform:translateY(-18px);}}
+        </style>`);
+    </script>
+</body>
+</html>
